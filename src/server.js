@@ -22,8 +22,11 @@ io.on('connection', socket => {
   })
 
   socket.on('send message', (message) => {
-  	console.log("from: ", socket.id)
-  	io.sockets.emit("receive message", message, socket.id)
+  	io.sockets.emit("receive message", message)
+  })
+
+  socket.on("send paint", (strokeStyle, x, y, offsetX, offsetY) =>{
+  	io.sockets.emit("receive paint", strokeStyle, x, y, offsetX, offsetY)
   })
 })
 

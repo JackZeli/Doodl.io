@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./Canvas.css"
 import ColorButton from "./colorButton.js"
 import socketIOClient from 'socket.io-client'
-
+const socket = socketIOClient("localhost:4001");
 
 class Canvas extends Component {
   constructor() {
@@ -23,6 +23,14 @@ class Canvas extends Component {
     	width: 10,
       endpoint: "localhost:4001",
     }
+    socket.on("receive paint", (strokeStyle, x, y, offsetX, offsetY) => {
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = strokeStyle;
+      this.ctx.moveTo(x, y);
+      this.ctx.lineTo(offsetX, offsetY);
+      this.ctx.stroke();
+      this.state.prevPos = { offsetX, offsetY };
+    })
   }
 
   onMouseDown({ nativeEvent }) {
@@ -68,18 +76,14 @@ class Canvas extends Component {
     		isPainting: false
     	})
     }
+    socket.emit("send paint", this.ctx.canvas)
   }
 
   paint(prevPos, currPos, strokeStyle) {
     const { offsetX, offsetY } = currPos;
     const { offsetX: x, offsetY: y } = prevPos;
 
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = strokeStyle;
-    this.ctx.moveTo(x, y);
-    this.ctx.lineTo(offsetX, offsetY);
-    this.ctx.stroke();
-    this.state.prevPos = { offsetX, offsetY };
+    socket.emit("send paint", strokeStyle, x, y, offsetX, offsetY)
   }
 
   componentDidMount() {

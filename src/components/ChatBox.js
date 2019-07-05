@@ -15,7 +15,7 @@ class ChatBox extends React.Component{
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleChange = this.handleChange.bind(this)
-		socket.on('receive message', (message, id) => {
+		socket.on('receive message', (message) => {
 			let tempMessages = this.state.messages.concat(message)
 			const displayed = tempMessages.map(message => <div> {message} <br /> </div>)
 			this.setState({chat: displayed, messages: tempMessages})
