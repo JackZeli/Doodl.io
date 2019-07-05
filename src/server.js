@@ -21,9 +21,9 @@ io.on('connection', socket => {
     console.log('user disconnected')
   })
 
-  socket.on('update chat', (updated) => {
-  	console.log("updating chat: ", updated)
-  	io.sockets.emit("update chat", updated)
+  socket.on('send message', (message) => {
+  	console.log("from: ", socket.id)
+  	io.sockets.emit("receive message", message, socket.id)
   })
 })
 

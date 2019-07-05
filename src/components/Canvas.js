@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import "./Canvas.css"
 import ColorButton from "./colorButton.js"
+import socketIOClient from 'socket.io-client'
+
 
 class Canvas extends Component {
   constructor() {
@@ -19,6 +21,7 @@ class Canvas extends Component {
     		offsetY: 0
     	},
     	width: 10,
+      endpoint: "localhost:4001",
     }
   }
 

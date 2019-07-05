@@ -9,7 +9,7 @@ class App extends Component {
       <Fragment>
         <div className="main">
           <Canvas />
-          <ChatBox />
+          <ChatBox endpoint="localhost:4001" />
         </div>
       </Fragment>
     );

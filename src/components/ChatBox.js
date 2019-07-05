@@ -1,9 +1,10 @@
 import React from "react"
 import "./ChatBox.css"
 import socketIOClient from 'socket.io-client'
-
+const socket = socketIOClient("localhost:4001");
 
 class ChatBox extends React.Component{
+
 	constructor(){
 		super()
 		this.state ={
@@ -14,11 +15,11 @@ class ChatBox extends React.Component{
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleChange = this.handleChange.bind(this)
-		const socket = socketIOClient(this.state.endpoint);
-		socket.on('update chat', (updated) => {
-			console.log("received ", updated)
-			const displayed = updated.map(message => <div> {message} <br /> </div>)
-			this.setState({chat: displayed, messages: updated})
+		socket.on('receive message', (message, id) => {
+			let tempMessages = this.state.messages.concat(message)
+			const displayed = tempMessages.map(message => <div> {message} <br /> </div>)
+			this.setState({chat: displayed, messages: tempMessages})
+			
 		})
 	}
 
@@ -30,15 +31,12 @@ class ChatBox extends React.Component{
 		event.preventDefault()
 		if(this.state.guess !== ""){
 			let tempMessages = this.state.messages.concat(this.state.guess);
-			
+			socket.emit('send message', this.state.guess)
 			this.setState(prevState =>{
 				return{
-					messages: tempMessages,
 					guess: "",
 				}
 			})
-			const socket = socketIOClient(this.state.endpoint)
-			socket.emit('update chat', tempMessages)
 		}
 	}
 
