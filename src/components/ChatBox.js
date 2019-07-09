@@ -15,10 +15,17 @@ class ChatBox extends React.Component{
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleChange = this.handleChange.bind(this)
-		socket.on('receive message', (message) => {
+		socket.on('receive message', (message, username) => {
 			let tempMessages = this.state.messages.concat(message)
-			const displayed = tempMessages.map(message => <div> {message} <br /> </div>)
-			this.setState({chat: displayed, messages: tempMessages})
+			const display = <div> {username}: {message} <br /> </div>
+
+			//const displayed = tempMessages.map(message => <div> {username}: {message} <br /> </div>)
+			this.setState(prevState =>{
+				return{
+					chat: prevState.chat.concat(display), 
+					messages: tempMessages
+				}
+			})
 			
 		})
 	}
@@ -31,7 +38,7 @@ class ChatBox extends React.Component{
 		event.preventDefault()
 		if(this.state.guess !== ""){
 			let tempMessages = this.state.messages.concat(this.state.guess);
-			socket.emit('send message', this.state.guess)
+			socket.emit('send message', this.state.guess, this.props.username)
 			this.setState(prevState =>{
 				return{
 					guess: "",

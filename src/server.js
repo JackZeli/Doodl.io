@@ -21,8 +21,8 @@ io.on('connection', socket => {
     console.log('user disconnected')
   })
 
-  socket.on('send message', (message) => {
-  	io.sockets.emit("receive message", message)
+  socket.on('send message', (message, username) => {
+  	io.sockets.emit("receive message", message, username)
   })
 
   socket.on("send paint", (strokeStyle, x, y, offsetX, offsetY) =>{
