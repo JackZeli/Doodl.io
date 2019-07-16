@@ -1,7 +1,7 @@
 import React from "react"
 import "./ChatBox.css"
+import {socket} from "./socket.js"
 import socketIOClient from 'socket.io-client'
-const socket = socketIOClient("localhost:4001");
 
 class ChatBox extends React.Component{
 

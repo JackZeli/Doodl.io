@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import "./Canvas.css"
 import ColorButton from "./colorButton.js"
+import {socket} from "./socket.js"
 import socketIOClient from 'socket.io-client'
-const socket = socketIOClient("localhost:4001");
 
 class Canvas extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
@@ -22,6 +22,8 @@ class Canvas extends Component {
     	},
     	width: 10,
       endpoint: "localhost:4001",
+      username: this.props.username,
+      drawingPlayer: this.props.currentPlayer,
     }
     socket.on("receive paint", (strokeStyle, x, y, offsetX, offsetY) => {
       this.ctx.beginPath();
@@ -35,14 +37,16 @@ class Canvas extends Component {
 
   onMouseDown({ nativeEvent }) {
     const { offsetX, offsetY } = nativeEvent;
-    this.setState({
-    		isPainting: true,
-    		prevPos: {
-    			offsetX: offsetX,
-    			offsetY: offsetY,
-    		
-    	}
-    })
+    console.log(this.state.username, this.state.currentPlayer)
+    if(this.state.username === this.state.drawingPlayer){
+      this.setState({
+      		isPainting: true,
+      		prevPos: {
+      			offsetX: offsetX,
+      			offsetY: offsetY,
+      	}
+      })
+    }
   
   }
 
@@ -93,6 +97,7 @@ class Canvas extends Component {
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
     this.ctx.lineWidth = this.state.width;
+
   }
 
   render() {

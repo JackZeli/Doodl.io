@@ -13,12 +13,29 @@ const server = http.createServer(app)
 // This creates our socket using the instance of the server
 const io = socketIO(server)
 
+var users = {};
+
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
   console.log('User connected')
   
   socket.on('disconnect', () => {
+    const name = socket.id
+    delete users[socket.id]
+    console.log(users)
     console.log('user disconnected')
+  })
+
+  socket.on('register user', (username) => {
+    if(Object.keys(users).length == 0){
+      io.sockets.emit("set turn", username)
+    }
+    const user = {
+      name: username,
+      points: 0,
+    }
+    users[socket.id] = user
+    console.log(users)
   })
 
   socket.on('send message', (message, username) => {
