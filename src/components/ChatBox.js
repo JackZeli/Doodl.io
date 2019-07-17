@@ -28,6 +28,22 @@ class ChatBox extends React.Component{
 			})
 			
 		})
+		socket.on('member joined', (username) => {
+			const display = <div className="join"> {username} has joined the game. <br /> </div>
+			this.setState(prevState =>{
+				return{
+					chat: prevState.chat.concat(display), 
+				}
+			})
+		})
+		socket.on('member left', (username) => {
+			const display = <div className="leave"> {username} has left the game. <br /> </div>
+			this.setState(prevState =>{
+				return{
+					chat: prevState.chat.concat(display), 
+				}
+			})
+		})
 	}
 
 	handleChange(event){

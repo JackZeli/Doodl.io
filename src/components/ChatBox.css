@@ -9,3 +9,13 @@
 input{
 	margin-left:20px;
 }
+
+.join{
+	color: green;
+	font-style: italic;
+}
+
+.leave{
+	color: red;
+	font-style: italic;
+}

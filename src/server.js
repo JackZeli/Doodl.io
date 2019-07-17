@@ -22,9 +22,12 @@ io.on('connection', socket => {
   console.log('User connected')
   
   socket.on('disconnect', () => {
-    const name = socket.id
-    delete users[socket.id]
-    console.log(users)
+    if(Object.keys(users).length !== 0){
+      const name = socket.id
+      const temp = users[socket.id]
+      io.sockets.emit("member left", temp.name)
+      delete users[socket.id]
+    }
     console.log('user disconnected')
   })
 
@@ -41,7 +44,7 @@ io.on('connection', socket => {
       points: 0,
     }
     users[socket.id] = user
-    console.log(users)
+    io.sockets.emit("member joined", username)
   })
 
   socket.on('send message', (message, username) => {
