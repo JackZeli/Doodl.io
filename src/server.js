@@ -15,6 +15,8 @@ const io = socketIO(server)
 
 var users = {};
 
+var currentPlayer = "";
+
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
   console.log('User connected')
@@ -29,6 +31,10 @@ io.on('connection', socket => {
   socket.on('register user', (username) => {
     if(Object.keys(users).length == 0){
       io.sockets.emit("set turn", username)
+      currentPlayer = username;
+    }
+    else{
+      io.sockets.emit("set turn", currentPlayer)
     }
     const user = {
       name: username,

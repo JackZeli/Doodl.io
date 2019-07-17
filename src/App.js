@@ -17,7 +17,7 @@ class App extends Component {
     }
     this.setUser = this.setUser.bind(this)
     socket.on("set turn", (username) => {
-      this.setState({"currentPlayer": username})
+      this.setState({currentPlayer: username})
       console.log(this.state)
     })
   }
@@ -33,7 +33,7 @@ class App extends Component {
         {this.state.isLoggedIn ? 
           <div className="main">
             <WordBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
-            <Canvas />
+            <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
             <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
           </div> 
           :
