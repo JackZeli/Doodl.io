@@ -4,6 +4,7 @@ import Canvas from './components/Canvas';
 import ChatBox from './components/ChatBox';
 import Login from './components/Login';
 import WordBox from './components/WordBox'
+import ChoosingScreen from './components/ChoosingScreen'
 import {socket} from "./components/socket.js"
 import socketIOClient from 'socket.io-client'
 class App extends Component {
@@ -14,11 +15,15 @@ class App extends Component {
       isLoggedIn: false,
       username: "",
       currentPlayer: "",
+      wordChosen: false,
     }
     this.setUser = this.setUser.bind(this)
     socket.on("set turn", (username) => {
       this.setState({currentPlayer: username})
       console.log(this.state)
+    })
+    socket.on("word chosen", () => {
+      this.setState({wordChosen: true})
     })
   }
 
@@ -32,6 +37,7 @@ class App extends Component {
       <Fragment>
         {this.state.isLoggedIn ? 
           <div className="main">
+            {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
             <WordBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
             <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
             <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
@@ -52,6 +58,8 @@ NEXT GOALS:
   - Users being able to guess words
       - Display a message to only them saying they guessed it, everyone else sees a different, similar message
       - Actually give the user points
+
+  - Make it not based on username but socket id lmfao
 
 User info needed:
   - Username

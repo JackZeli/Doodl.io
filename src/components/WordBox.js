@@ -6,11 +6,12 @@ class WordBox extends React.Component{
 		this.state = {
 			username: this.props.username,
 			drawingUser: this.props.currentPlayer,
-			word: "snuffles",
+			word: this.props.word,
 		}
 	}
 
 	render(){
+
 		return(
 			<h1> {this.props.currentPlayer} </h1>
 		)
