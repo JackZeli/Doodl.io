@@ -88,7 +88,6 @@ class Canvas extends Component {
     		isPainting: false
     	})
     }
-    socket.emit("send paint", this.ctx.canvas)
   }
 
   paint(prevPos, currPos, strokeStyle) {
