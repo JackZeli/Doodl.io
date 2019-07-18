@@ -22,8 +22,7 @@ io.on('connection', socket => {
   console.log('User connected')
   
   socket.on('disconnect', () => {
-    if(Object.keys(users).length !== 0){
-      const name = socket.id
+    if(Object.keys(users).length !== 0 && socket.id in users){
       const temp = users[socket.id]
       io.sockets.emit("member left", temp.name)
       delete users[socket.id]
@@ -45,6 +44,7 @@ io.on('connection', socket => {
     }
     users[socket.id] = user
     io.sockets.emit("member joined", username)
+    io.sockets.emit("update users", users)
   })
 
   socket.on('send message', (message, username) => {
@@ -57,6 +57,10 @@ io.on('connection', socket => {
 
   socket.on("send paint", (strokeStyle, x, y, offsetX, offsetY) =>{
   	io.sockets.emit("receive paint", strokeStyle, x, y, offsetX, offsetY)
+  })
+
+  socket.on("correct guess", (username) => {
+    io.sockets.emit("word guessed", username)
   })
 })
 

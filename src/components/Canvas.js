@@ -7,8 +7,6 @@ import socketIOClient from 'socket.io-client'
 class Canvas extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
-
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
     this.endPaintEvent = this.endPaintEvent.bind(this)

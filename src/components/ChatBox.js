@@ -11,7 +11,7 @@ class ChatBox extends React.Component{
 			messages: [],
 			guess: "",
 			chat: [],
-			endpoint: "localhost:4001"
+			word: "",
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleChange = this.handleChange.bind(this)
@@ -44,6 +44,24 @@ class ChatBox extends React.Component{
 				}
 			})
 		})
+		socket.on("word chosen", (choice) => {
+			this.setState({word: choice})
+			//console.log(this.state.word[0])
+		})
+		socket.on("word guessed", (username) => {
+			var display = ""
+			if(username === this.props.username){
+				display = <div className="join"> You guessed the word! <br /> </div>
+			}
+			else{
+				display = <div className="join"> {username} guessed the word! <br /> </div>
+			}
+			this.setState(prevState =>{
+				return{
+					chat: prevState.chat.concat(display), 
+				}
+			})
+		})
 	}
 
 	handleChange(event){
@@ -53,13 +71,25 @@ class ChatBox extends React.Component{
 	handleSubmit(event){
 		event.preventDefault()
 		if(this.state.guess !== ""){
-			let tempMessages = this.state.messages.concat(this.state.guess);
-			socket.emit('send message', this.state.guess, this.props.username)
-			this.setState(prevState =>{
-				return{
-					guess: "",
-				}
-			})
+			if(this.state.guess === this.state.word){
+				console.log('word')
+				//TODO: actually add points
+				socket.emit("correct guess", this.props.username)
+				this.setState(prevState =>{
+					return{
+						guess: "",
+					}
+				})
+			}
+			else{
+				let tempMessages = this.state.messages.concat(this.state.guess);
+				socket.emit('send message', this.state.guess, this.props.username)
+				this.setState(prevState =>{
+					return{
+						guess: "",
+					}
+				})
+			}
 		}
 	}
 

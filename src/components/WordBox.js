@@ -1,4 +1,6 @@
 import React from "react"
+import {socket} from "./socket.js"
+
 
 class WordBox extends React.Component{
 	constructor(props){
@@ -6,14 +8,18 @@ class WordBox extends React.Component{
 		this.state = {
 			username: this.props.username,
 			drawingUser: this.props.currentPlayer,
-			word: this.props.word,
+			word: "",
 		}
+		socket.on("word chosen", (choice) => {
+			this.setState({word: choice})
+			//console.log(this.state.word[0])
+		})
 	}
 
 	render(){
 
 		return(
-			<h1> {this.props.currentPlayer} </h1>
+			<h1> {this.state.word} </h1>
 		)
 	}
 }

@@ -6,6 +6,7 @@ import Login from './components/Login';
 import WordBox from './components/WordBox'
 import ChoosingScreen from './components/ChoosingScreen'
 import {socket} from "./components/socket.js"
+import UserList from "./components/UserList"
 import socketIOClient from 'socket.io-client'
 class App extends Component {
 
@@ -16,6 +17,7 @@ class App extends Component {
       username: "",
       currentPlayer: "",
       wordChosen: false,
+      users: {},
     }
     this.setUser = this.setUser.bind(this)
     socket.on("set turn", (username) => {
@@ -24,6 +26,9 @@ class App extends Component {
     })
     socket.on("word chosen", () => {
       this.setState({wordChosen: true})
+    })
+    socket.on("update users", (users) => {
+      this.setState({users: users})
     })
   }
 
@@ -38,7 +43,7 @@ class App extends Component {
         {this.state.isLoggedIn ? 
           <div className="main">
             {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
-            <WordBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
+            <UserList users={this.state.users} />
             <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
             <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
           </div> 
@@ -61,11 +66,15 @@ NEXT GOALS:
 
   - Make it not based on username but socket id lmfao
 
+  - Style the word selector lol
+
 User info needed:
   - Username
   - Password (?)
   - Points
   - isDrawing
+
+            <WordBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
 
 
 */
