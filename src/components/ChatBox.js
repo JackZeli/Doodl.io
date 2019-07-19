@@ -13,9 +13,11 @@ class ChatBox extends React.Component{
 			guessed: false,
 			chat: [],
 			word: "",
+			points: 200,
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.startPoints = this.startPoints.bind(this)
 		socket.on('receive message', (message, username, hidden) => {
 			if(this.state.guessed && hidden){
 				let tempMessages = this.state.messages.concat(message)
@@ -76,7 +78,21 @@ class ChatBox extends React.Component{
 				}
 			})
 		})
+		socket.on("start timer", () => {
+      		this.startPoints()
+   		})
 		
+	}
+
+	startPoints(){
+		var myInterval = setInterval(() => this.setState(prevState => {
+			if(this.state.time == 1){
+				clearInterval(myInterval)
+			}
+			return{
+				points: prevState.points - 2,
+			}
+		}), 1000)
 	}
 
 	componentDidUpdate(prevProps){
@@ -97,7 +113,7 @@ class ChatBox extends React.Component{
 			if(this.state.guess === this.state.word){
 				console.log('word')
 				//TODO: actually add points
-				socket.emit("correct guess", this.props.username)
+				socket.emit("correct guess", this.props.username, this.state.points)
 				this.setState(prevState =>{
 					return{
 						guess: "",

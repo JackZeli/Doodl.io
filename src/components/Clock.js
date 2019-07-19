@@ -5,18 +5,28 @@ class Timer extends React.Component{
 	constructor(){
 		super()
 		this.state = {
-			time: 90
+			time: 90,
+			guessed: false
 		}
 		this.startTimer = this.startTimer.bind(this)
 		socket.on("start timer", () => {
       		this.startTimer()
    		})
+   		socket.on("word guessed", () => {
+   			if(!this.state.guessed){
+   				this.setState({guessed:true, time:30})
+   			}
+   		})
 	}
 
 	startTimer(){
-		setInterval(() => this.setState(prevState => {
+		var myInterval = setInterval(() => this.setState(prevState => {
+			if(this.state.time == 1){
+				clearInterval(myInterval)
+				socket.emit("turn over")
+			}
 			return{
-				time: prevState.time - 1
+				time: prevState.time - 1,
 			}
 		}), 1000)
 	}

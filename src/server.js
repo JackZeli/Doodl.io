@@ -60,8 +60,10 @@ io.on('connection', socket => {
   	io.sockets.emit("receive paint", strokeStyle, x, y, offsetX, offsetY)
   })
 
-  socket.on("correct guess", (username) => {
+  socket.on("correct guess", (username, points) => {
+    users[socket.id].points += points
     io.sockets.emit("word guessed", username)
+    io.sockets.emit("update users", users)
   })
 })
 
