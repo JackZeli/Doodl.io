@@ -47,8 +47,8 @@ io.on('connection', socket => {
     io.sockets.emit("update users", users)
   })
 
-  socket.on('send message', (message, username) => {
-  	io.sockets.emit("receive message", message, username)
+  socket.on('send message', (message, username, hidden) => {
+  	io.sockets.emit("receive message", message, username, hidden)
   })
 
   socket.on("send choice", (choice) =>{
