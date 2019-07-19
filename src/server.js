@@ -53,6 +53,7 @@ io.on('connection', socket => {
 
   socket.on("send choice", (choice) =>{
     io.sockets.emit("word chosen", choice)
+    io.sockets.emit("start timer")
   })
 
   socket.on("send paint", (strokeStyle, x, y, offsetX, offsetY) =>{

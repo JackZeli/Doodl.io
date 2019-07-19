@@ -5,6 +5,7 @@ import ChatBox from './components/ChatBox';
 import Login from './components/Login';
 import WordBox from './components/WordBox'
 import ChoosingScreen from './components/ChoosingScreen'
+import Timer from "./components/Clock"
 import {socket} from "./components/socket.js"
 import UserList from "./components/UserList"
 import socketIOClient from 'socket.io-client'
@@ -43,6 +44,7 @@ class App extends Component {
         {this.state.isLoggedIn ? 
           <div className="main">
             {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
+            <Timer />
             <UserList users={this.state.users} />
             <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
             <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
@@ -61,7 +63,7 @@ NEXT GOALS:
   - Word box with underlines that get swapped out with letters
   - Timer (develop alongside word box)
   - Users being able to guess words
-      - Display a message to only them saying they guessed it, everyone else sees a different, similar message
+      - Display a message to only them saying they guessed it, everyone else sees a different, similar message DONE
       - Actually give the user points
 
   - Make it not based on username but socket id lmfao
