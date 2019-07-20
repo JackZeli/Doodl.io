@@ -15,6 +15,8 @@ const io = socketIO(server)
 
 var users = {};
 
+var allLines = [];
+
 var currentPlayer = "";
 
 // This is what the socket.io syntax is like, we will work this later
@@ -26,6 +28,11 @@ io.on('connection', socket => {
       const temp = users[socket.id]
       io.sockets.emit("member left", temp.name)
       delete users[socket.id]
+    }
+    if(Object.keys(users).length === 0){
+      users = {}
+      allLines = []
+      currentPlayer = ""
     }
     console.log('user disconnected')
   })
@@ -45,6 +52,7 @@ io.on('connection', socket => {
     users[socket.id] = user
     io.sockets.emit("member joined", username)
     io.sockets.emit("update users", users)
+    io.sockets.emit("draw up", allLines)
   })
 
   socket.on('send message', (message, username, hidden) => {
@@ -57,6 +65,14 @@ io.on('connection', socket => {
   })
 
   socket.on("send paint", (strokeStyle, x, y, offsetX, offsetY) =>{
+    const paint = {
+      strokeStyle: strokeStyle,
+      x: x,
+      y: y,
+      offsetX: offsetX,
+      offsetY: offsetY
+    }
+    allLines.push(paint)
   	io.sockets.emit("receive paint", strokeStyle, x, y, offsetX, offsetY)
   })
 

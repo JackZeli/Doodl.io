@@ -20,7 +20,6 @@ class Canvas extends Component {
     		offsetY: 0
     	},
     	width: 10,
-      endpoint: "localhost:4001",
       username: this.props.username,
       currentPlayer: this.props.currentPlayer,
     }
@@ -32,12 +31,28 @@ class Canvas extends Component {
       this.ctx.stroke();
       this.state.prevPos = { offsetX, offsetY };
     })
+
+    socket.on("draw up", (lines) => {
+      var line;
+      console.log(lines)
+      for(line in lines){
+        const temp = lines[line]
+        const offsetX = temp.offsetX
+        const offsetY = temp.offsetY
+        console.log(temp)
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = temp.strokeStyle;
+        this.ctx.moveTo(temp.x, temp.y);
+        this.ctx.lineTo(temp.offsetX, temp.offsetY);
+        this.ctx.stroke();
+        this.state.prevPos = { offsetX, offsetY };
+      }
+    })
+
   }
 
   onMouseDown({ nativeEvent }) {
     const { offsetX, offsetY } = nativeEvent;
-    console.log(this.state.username)
-    console.log(this.state.currentPlayer)
     if(this.state.username === this.state.currentPlayer){
       this.setState({
       		isPainting: true,
