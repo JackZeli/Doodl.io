@@ -21,6 +21,14 @@ var currentPlayer = "";
 
 var curWord = "";
 
+var time = 90;
+
+var points = 200;
+
+var guessed = false;
+
+var myInterval;
+
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
   console.log('User connected')
@@ -37,6 +45,10 @@ io.on('connection', socket => {
       allLines = []
       currentPlayer = ""
       curWord = ""
+      time = 90;
+      points = 200;
+      guessed = false;
+      clearInterval(myInterval)
     }
     console.log('user disconnected')
   })
@@ -57,8 +69,11 @@ io.on('connection', socket => {
     io.sockets.emit("member joined", username)
     io.sockets.emit("update users", users)
     io.sockets.emit("draw up", allLines)
+
     if(curWord !== ""){
       io.sockets.emit("word chosen", curWord)
+      io.sockets.emit("set timer", time)
+      io.sockets.emit("set points", points)
     }
    
   })
@@ -70,7 +85,18 @@ io.on('connection', socket => {
   socket.on("send choice", (choice) =>{
     curWord = choice
     io.sockets.emit("word chosen", choice)
-    io.sockets.emit("start timer")
+    io.sockets.emit("start points")
+    io.sockets.emit("set timer", time)
+    io.sockets.emit("set points", points)
+    myInterval = setInterval(function(){
+      if(time == 0){
+        clearInterval(myInterval)
+      }
+      time = time - 1;   
+      points = points - 2;
+      io.sockets.emit("set timer", time)
+      io.sockets.emit("set points", points)   
+    }, 1000)
   })
 
   socket.on("send paint", (strokeStyle, x, y, offsetX, offsetY) =>{
@@ -85,9 +111,13 @@ io.on('connection', socket => {
   	io.sockets.emit("receive paint", strokeStyle, x, y, offsetX, offsetY)
   })
 
-  socket.on("correct guess", (username, points) => {
+  socket.on("correct guess", (username) => {
     users[socket.id].points += points
     io.sockets.emit("word guessed", username)
+    if(!guessed){
+      time = 30
+      io.sockets.emit("set timer", time)
+    }
     io.sockets.emit("update users", users)
   })
 })

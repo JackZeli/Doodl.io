@@ -7,6 +7,7 @@ import WordBox from './components/WordBox'
 import ChoosingScreen from './components/ChoosingScreen'
 import Timer from "./components/Clock"
 import Lobby from "./components/Lobby"
+import EndTurn from "./components/EndTurn"
 import {socket} from "./components/socket.js"
 import UserList from "./components/UserList"
 import socketIOClient from 'socket.io-client'
@@ -20,11 +21,12 @@ class App extends Component {
       username: "",
       currentPlayer: "",
       wordChosen: false,
+      allGuessed: false,
       users: {},
     }
     this.setUser = this.setUser.bind(this)
     socket.on("set turn", (username) => {
-      this.setState({currentPlayer: username})
+      this.setState({currentPlayer: username, allGuessed: false, wordChosen:false})
       console.log(this.state)
     })
     socket.on("word chosen", () => {
@@ -32,6 +34,9 @@ class App extends Component {
     })
     socket.on("update users", (users) => {
       this.setState({users: users})
+    })
+    socket.on("turn over", () => {
+      this.setState({allGuessed: true})
     })
   }
 
@@ -50,12 +55,13 @@ class App extends Component {
       <Fragment>
         {this.state.isLoggedIn ? 
           <div>
-          {this.state.gameStart ? 
+          {!this.state.gameStart ? 
             <div className="main">
               <Timer />
               <UserList users={this.state.users} />
               <div className="box">
                 {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
+                {this.state.allGuessed && <EndTurn users={this.state.users}/>}
                 <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
               </div>
               <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
