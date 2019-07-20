@@ -1,9 +1,10 @@
 import React from "react"
+import "./colorButton.css"
 
 
 function ColorButton(props){
 	return(
-		<div>
+		<div className="button">
 			<button onClick={() => props.handleClick(props.color)}>{props.color}</button> 
 		</div>
 	)

@@ -11,6 +11,10 @@ body {
 h5 {
   margin-bottom: 10px;
 }
+.box{
+  width:500px;
+  height:500px;
+}
 .user {
   padding: 7px 15px;
   border-radius: 4px;

@@ -6,7 +6,6 @@ canvas {
 	background: white;
 	width: 500px;
 	height: 500px;
-	position: relative;
-	margin-top:5%;
+	position: absolute;
 	float: right;
 }

@@ -6,6 +6,7 @@ import Login from './components/Login';
 import WordBox from './components/WordBox'
 import ChoosingScreen from './components/ChoosingScreen'
 import Timer from "./components/Clock"
+import Lobby from "./components/Lobby"
 import {socket} from "./components/socket.js"
 import UserList from "./components/UserList"
 import socketIOClient from 'socket.io-client'
@@ -15,6 +16,7 @@ class App extends Component {
     super()
     this.state = {
       isLoggedIn: false,
+      gameStart: false,
       username: "",
       currentPlayer: "",
       wordChosen: false,
@@ -34,21 +36,33 @@ class App extends Component {
   }
 
   setUser(name){
-    this.setState({username: name, isLoggedIn: true})
-    socket.emit("register user", name)
+    if(name === ""){
+      alert("Enter a valid name!")
+    }
+    else{
+      this.setState({username: name, isLoggedIn: true})
+      socket.emit("register user", name)
+    }
   }
 
   render() {
     return (
       <Fragment>
         {this.state.isLoggedIn ? 
-          <div className="main">
-            {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
-            <Timer />
-            <UserList users={this.state.users} />
-            <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
-            <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
-          </div> 
+          <div>
+          {this.state.gameStart ? 
+            <div className="main">
+              <Timer />
+              <UserList users={this.state.users} />
+              <div className="box">
+                {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
+                <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
+              </div>
+              <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
+            </div> :
+            <Lobby users={this.state.users} username={this.state.username} currentPlayer={this.state.currentPlayer}/>
+          }
+          </div>
           :
           <Login setUser={this.setUser} name={this.state.username}/>
         }
@@ -61,10 +75,10 @@ export default App;
 /* 
 NEXT GOALS:
   - Word box with underlines that get swapped out with letters
-  - Timer (develop alongside word box)
+  - Timer (develop alongside word box) DONE
   - Users being able to guess words
       - Display a message to only them saying they guessed it, everyone else sees a different, similar message DONE
-      - Actually give the user points
+      - Actually give the user points DONE
 
   - Make it not based on username but socket id lmfao
 
