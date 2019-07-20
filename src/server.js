@@ -19,6 +19,8 @@ var allLines = [];
 
 var currentPlayer = "";
 
+var curWord = "";
+
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
   console.log('User connected')
@@ -28,11 +30,13 @@ io.on('connection', socket => {
       const temp = users[socket.id]
       io.sockets.emit("member left", temp.name)
       delete users[socket.id]
+      io.sockets.emit("update users", users)
     }
     if(Object.keys(users).length === 0){
       users = {}
       allLines = []
       currentPlayer = ""
+      curWord = ""
     }
     console.log('user disconnected')
   })
@@ -53,6 +57,10 @@ io.on('connection', socket => {
     io.sockets.emit("member joined", username)
     io.sockets.emit("update users", users)
     io.sockets.emit("draw up", allLines)
+    if(curWord !== ""){
+      io.sockets.emit("word chosen", curWord)
+    }
+   
   })
 
   socket.on('send message', (message, username, hidden) => {
@@ -60,6 +68,7 @@ io.on('connection', socket => {
   })
 
   socket.on("send choice", (choice) =>{
+    curWord = choice
     io.sockets.emit("word chosen", choice)
     io.sockets.emit("start timer")
   })
