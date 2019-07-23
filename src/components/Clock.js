@@ -1,5 +1,6 @@
 import React from "react"
 import {socket} from "./socket.js"
+import "./Clock.css"
 
 class Timer extends React.Component{
 	constructor(){
@@ -18,7 +19,6 @@ class Timer extends React.Component{
    			}
    		})*/
 	}
-	//TODO: Completely sync timer across clients, maybe do it all serverside, good enough for now
 
 	startTimer(time){
 		this.setState({time:time})
@@ -38,7 +38,7 @@ class Timer extends React.Component{
 
 	render(){
 		return(
-			<div>
+			<div className="clock">
 				{this.state.time}
 			</div>
 		)

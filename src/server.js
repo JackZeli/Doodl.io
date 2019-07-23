@@ -23,6 +23,8 @@ var curWord = "";
 
 var time = 90;
 
+var diffy = 20;
+
 var points = 200;
 
 var guessed = false;
@@ -46,6 +48,7 @@ io.on('connection', socket => {
       currentPlayer = ""
       curWord = ""
       time = 90;
+      diffy = 0;
       points = 200;
       guessed = false;
       clearInterval(myInterval)
@@ -89,11 +92,15 @@ io.on('connection', socket => {
     io.sockets.emit("set timer", time)
     io.sockets.emit("set points", points)
     myInterval = setInterval(function(){
-      if(time == 0){
+      if(time == 1){
         clearInterval(myInterval)
       }
       time = time - 1;   
+      diffy = diffy + 1;
       points = points - 2;
+      if(diffy === 25 || diffy === 50 || diffy === 75 ){
+        io.sockets.emit("update box")
+      }
       io.sockets.emit("set timer", time)
       io.sockets.emit("set points", points)   
     }, 1000)

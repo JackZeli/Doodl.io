@@ -59,12 +59,14 @@ class App extends Component {
             <div className="main">
               <Timer />
               <UserList users={this.state.users} />
+              <WordBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
               <div className="box">
                 {!this.state.wordChosen && <ChoosingScreen username={this.state.username} currentPlayer={this.state.currentPlayer}/>}
                 {this.state.allGuessed && <EndTurn users={this.state.users}/>}
                 <Canvas username={this.state.username} currentPlayer={this.state.currentPlayer}/>
               </div>
               <ChatBox username={this.state.username} currentPlayer={this.state.currentPlayer}/>
+
             </div> :
             <Lobby users={this.state.users} username={this.state.username} currentPlayer={this.state.currentPlayer}/>
           }
@@ -82,7 +84,18 @@ export default App;
 NEXT GOALS:
   - Word box with underlines that get swapped out with letters
   - Timer (develop alongside word box) DONE
-  - Users being able to guess words
+  - TURNS like a proper working turn system
+  - ROUNDS like a proper working round system
+  - AUDIENCE like a proper working audience system
+    - they can guess and chat in their own box
+    - if all players guess the word before time runs out audience is SOL just as to not slow down the game
+    - Never reorder audience players
+    - When a player disconnect (find the stipulation between leaving the game by accident and on purpose, maybe a timer?) fill spot with audience member
+      - points wont carry
+  - reorder the users based on their points at the end of a round
+
+
+  - Users being able to guess words DONE
       - Display a message to only them saying they guessed it, everyone else sees a different, similar message DONE
       - Actually give the user points DONE
 
