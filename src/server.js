@@ -23,7 +23,7 @@ var curWord = "";
 
 var time = 90;
 
-var diffy = 20;
+var diffy = 0;
 
 var points = 200;
 
@@ -54,6 +54,10 @@ io.on('connection', socket => {
       clearInterval(myInterval)
     }
     console.log('user disconnected')
+  })
+
+  socket.on("begin game", () => {
+    io.sockets.emit("game start")
   })
 
   socket.on('register user', (username) => {

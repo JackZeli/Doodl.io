@@ -22,8 +22,8 @@ class Lobby extends React.Component{
 		return(
 			<div>
 				{display}
-				<button onClick={this.start}> Start Game </button>
-				}
+				{Object.keys(this.props.users).length === 0 && <button onClick={this.start}> Start Game </button>}
+				
 			</div>
 		)
 	}

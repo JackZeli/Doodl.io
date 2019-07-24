@@ -38,6 +38,9 @@ class App extends Component {
     socket.on("turn over", () => {
       this.setState({allGuessed: true})
     })
+    socket.on("game start", () => {
+      this.setState({gameStart: true})
+    })
   }
 
   setUser(name){
@@ -55,7 +58,7 @@ class App extends Component {
       <Fragment>
         {this.state.isLoggedIn ? 
           <div>
-          {!this.state.gameStart ? 
+          {this.state.gameStart ? 
             <div className="main">
               <Timer />
               <UserList users={this.state.users} />
@@ -82,7 +85,7 @@ export default App;
 
 /* 
 NEXT GOALS:
-  - Word box with underlines that get swapped out with letters
+  - Word box with underlines that get swapped out with letters DONE
   - Timer (develop alongside word box) DONE
   - TURNS like a proper working turn system
   - ROUNDS like a proper working round system
