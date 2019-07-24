@@ -13,7 +13,7 @@ class Canvas extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.state = {
     	isPainting: false,
-    	paintColor: "#dfc30e",
+    	paintColor: "#000000",
     	line: [],
     	prevPos: {
     		offsetX: 0,

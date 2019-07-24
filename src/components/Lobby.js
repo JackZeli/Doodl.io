@@ -18,11 +18,11 @@ class Lobby extends React.Component{
 	}
 
 	render(){
-		const display = Object.keys(this.props.users).map(key => <div className="lobbyUser"> {this.props.users[key].name} </div>)
+		const display = Object.keys(this.props.users).map(key => <div className="lobbyUser"> {this.props.users[key].name} <br /> </div>)
 		return(
 			<div>
-				{display}
-				{Object.keys(this.props.users).length === 0 && <button onClick={this.start}> Start Game </button>}
+				{display} <br />
+				{Object.keys(this.props.users).length > 0 && <button onClick={this.start}> Start Game </button>}
 				
 			</div>
 		)

@@ -31,6 +31,67 @@ var guessed = false;
 
 var myInterval;
 
+var words = ["cat",
+"sun",
+"cup",
+"ghost",
+"flower",
+"pig",
+"cow",
+"banana",
+"snowflake",
+"bug",
+"book",
+"jar",
+"snake",
+"light",
+"tree",
+"lips",
+"apple",
+"slide",
+"socks",
+"smile",
+"swing",
+"coat",
+"shoe",
+"water",
+"heart",
+"hat",
+"ocean",
+"kite",
+"dog",
+"mouth",
+"milk",
+"duck",
+"eyes",
+"skateboard",
+"bird",
+"boy",
+"apple",
+"person",
+"girl",
+"mouse",
+"ball",
+"house",
+"star",
+"nose",
+"bed",
+"whale",
+"jacket",
+"shirt",
+"hippo",
+"beach",
+"egg",
+"face",
+"cookie",
+"cheese",
+"ice cream",
+"drum",
+"circle",
+"spoon",
+"worm",
+"spider web"]
+
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
   console.log('User connected')
@@ -58,6 +119,7 @@ io.on('connection', socket => {
 
   socket.on("begin game", () => {
     io.sockets.emit("game start")
+    io.sockets.emit("receive words", words)
   })
 
   socket.on('register user', (username) => {
@@ -102,7 +164,7 @@ io.on('connection', socket => {
       time = time - 1;   
       diffy = diffy + 1;
       points = points - 2;
-      if(diffy === 25 || diffy === 50 || diffy === 75 ){
+      if(diffy === 30 || diffy === 60 ){
         io.sockets.emit("update box")
       }
       io.sockets.emit("set timer", time)

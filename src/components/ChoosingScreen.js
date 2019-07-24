@@ -12,6 +12,16 @@ class ChoosingScreen extends React.Component {
 			choices: ["apple", "banana", "orange"]
 		}
 		this.sendChoice = this.sendChoice.bind(this)
+		socket.on("receive words", (words) => {
+			console.log(words)
+			let temp = [];
+			var i;
+			for (i = 0; i < 3; i++){
+				let num = Math.floor(Math.random() * words.length)
+				temp[i] = words[num]
+			}
+			this.setState({choices:temp})
+		})
 	}
 
 	componentDidUpdate(prevProps){

@@ -76,11 +76,10 @@ class ChatBox extends React.Component{
 				}
 			})
 		})
-		
 	}
 
 	componentDidUpdate(prevProps){
-		if(this.props.currentPlayer !== prevProps.currentPlayer){
+		if(this.props.currentPlayer !== prevProps.currentPlayer || !this.state.guessed){
 			if(this.props.username === this.props.currentPlayer){
 				this.setState({guessed: true})
 			}
@@ -94,7 +93,7 @@ class ChatBox extends React.Component{
 	handleSubmit(event){
 		event.preventDefault()
 		if(this.state.guess !== ""){
-			if(this.state.guess === this.state.word){
+			if(this.state.guess === this.state.word && !this.state.guessed){
 				console.log('word')
 				//TODO: actually add points
 				socket.emit("correct guess", this.props.username)
