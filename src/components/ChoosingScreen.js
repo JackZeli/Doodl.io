@@ -9,7 +9,7 @@ class ChoosingScreen extends React.Component {
 		this.state = {
 			username: this.props.username,
 			currentPlayer: this.props.currentPlayer,
-			choices: ["apple", "banana", "orange"]
+			choices: []
 		}
 		this.sendChoice = this.sendChoice.bind(this)
 		socket.on("receive words", (words) => {

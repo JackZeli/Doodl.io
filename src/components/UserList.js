@@ -15,7 +15,6 @@ class UserList extends React.Component{
 	    if(this.props.users !== prevProps.users){
 	      this.setState({users: this.props.users})
 	    }
-	    console.log(this.state.users)
   	}
 
 	render(){

@@ -76,6 +76,9 @@ class ChatBox extends React.Component{
 				}
 			})
 		})
+		socket.on("set turn", (username) => {
+			this.setState({guessed: false})
+		})
 	}
 
 	componentDidUpdate(prevProps){

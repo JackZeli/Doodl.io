@@ -27,7 +27,6 @@ class App extends Component {
     this.setUser = this.setUser.bind(this)
     socket.on("set turn", (username) => {
       this.setState({currentPlayer: username, allGuessed: false, wordChosen:false})
-      console.log(this.state)
     })
     socket.on("word chosen", () => {
       this.setState({wordChosen: true})
@@ -37,9 +36,22 @@ class App extends Component {
     })
     socket.on("turn over", () => {
       this.setState({allGuessed: true})
+      console.log("AAAAAAAAAA")
+      setTimeout(function(){
+        socket.emit("next turn")
+      }, 1000)
     })
     socket.on("game start", () => {
       this.setState({gameStart: true})
+    })
+    socket.on("bad name", () => {
+      alert("This name is already taken")
+      this.setState({username: "", isLoggedIn: false})
+    })
+    socket.on("get name", () => {
+      if(this.state.username !== ""){
+        socket.emit("had name", this.state.username)
+      }
     })
   }
 
@@ -58,7 +70,7 @@ class App extends Component {
       <Fragment>
         {this.state.isLoggedIn ? 
           <div>
-          {this.state.gameStart ? 
+          {!this.state.gameStart ? 
             <div className="main">
               <Timer />
               <UserList users={this.state.users} />
