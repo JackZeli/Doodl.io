@@ -1,3 +1,10 @@
+To run this application:
+1) Run "node server.js" from the src folder
+2) Run "npm start" from the root folder
+3) Open browser and connect to "localhost:3000"
+4) Open as many tabs as you'd like to simulate the number of players and try the game out! 
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
